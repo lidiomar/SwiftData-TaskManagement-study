@@ -8,28 +8,6 @@
 import SwiftUI
 import SwiftData
 
-enum ExhibitionMode {
-    case create
-    case update
-}
-
-enum TaskManagementScreen {
-    case project(exhibitionMode: ExhibitionMode)
-}
-
-struct TaskManagementPath: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(model)
-    }
-    
-    static func == (lhs: TaskManagementPath, rhs: TaskManagementPath) -> Bool {
-        return lhs.model.hashValue == rhs.model.hashValue
-    }
-    
-    @Bindable var model: Project
-    var location: TaskManagementScreen
-}
-
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext: ModelContext
     @Query var projects: [Project]
@@ -45,10 +23,12 @@ struct ContentView: View {
                             Text(project.projectDescription)
                         }
                     }
-                }
+                }.onDelete(perform: deleteProject)
             }.toolbar {
                 addProjectNavigationLink()
             }
+        }.onAppear {
+            modelContext.autosaveEnabled = false
         }
     }
     
@@ -56,6 +36,11 @@ struct ContentView: View {
         for index in indexSet {
             let project = projects[index]
             modelContext.delete(project)
+        }
+        do {
+            try modelContext.save()
+        } catch {
+            fatalError("An error occurred when deleting a project: \(error)")
         }
     }
     
