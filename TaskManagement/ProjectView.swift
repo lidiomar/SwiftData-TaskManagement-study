@@ -25,13 +25,21 @@ struct ProjectView: View {
                 Section {
                     ForEach(project.tasks) { task in
                         Text(task.taskDescription)
-                    }
+                    }.onDelete(perform: deleteTask)
                 }
             }
             
             Button(buttonDescription(), action: addNewProject)
         }.toolbar {
             addTaskNavigationLink()
+        }
+    }
+    
+    private func deleteTask(indexSet: IndexSet) {
+        for index in indexSet {
+            let task = project.tasks[index]
+            project.tasks.remove(at: index)
+            modelContext.delete(task)
         }
     }
     
