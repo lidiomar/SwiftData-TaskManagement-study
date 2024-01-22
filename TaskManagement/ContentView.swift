@@ -11,10 +11,10 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext: ModelContext
     @Query var projects: [Project]
-    
+    @State private var path = [Project]()
     var body: some View {
         let _ = print(modelContext.sqliteCommand)
-        NavigationStack {
+        NavigationStack(path: $path) {
             List {
                 ForEach(projects) { project in                    
                     NavigationLink(destination: ProjectView(project: project, exhibitionMode: .update)) {
@@ -25,10 +25,10 @@ struct ContentView: View {
                     }
                 }.onDelete(perform: deleteProject)
             }.toolbar {
-                addProjectNavigationLink()
-            }
-        }.onAppear {
-            modelContext.autosaveEnabled = false
+                Button("Add Project", systemImage: "plus", action: addDestination)
+            }.navigationDestination(for: Project.self, destination: { p in
+                ProjectView(project: p, exhibitionMode: .create)
+            })
         }
     }
     
@@ -37,19 +37,11 @@ struct ContentView: View {
             let project = projects[index]
             modelContext.delete(project)
         }
-        do {
-            try modelContext.save()
-        } catch {
-            fatalError("An error occurred when deleting a project: \(error)")
-        }
     }
     
-    private func addProjectNavigationLink() -> some View {
-        let projectView = ProjectView(project: Project(), exhibitionMode: .create)
-        return NavigationLink(destination: projectView) {
-            Text("Add project")
-        }
-        .buttonStyle(.borderless)
+    func addDestination() {
+        let project = Project()
+        path = [project]
     }
 }
 

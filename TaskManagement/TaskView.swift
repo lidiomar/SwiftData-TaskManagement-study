@@ -6,32 +6,28 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TaskView: View {
-    @Bindable var task: Task
-    @Binding var path: NavigationPath
+    @State private var description: String = ""
+    @State private var status: String  = ""
+    @Bindable var project: Project
+    @Environment(\.modelContext) var modelContext: ModelContext
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        Form {
-            TextField("Description", text: $task.taskDescription)
-            TextField("Status", text: $task.status)
-            
-            Section("Comments") {
-                if task.comments.isEmpty {
-                    Text("No comments available")
-                }
-                
-                ForEach(task.comments) { comment in
-                    NavigationLink(value: comment) {
-                        Text(comment.commentDescription)
-                    }
-                }
+        VStack {
+            Form {
+                TextField("Description", text: $description)
+                TextField("Status", text: $status)
             }
+            
+            Button("Save", action: {
+                let task = Task(taskDescription: description, comments: [], status: status)
+                modelContext.insert(task)
+                project.tasks.append(task)
+                dismiss()
+            })
         }
     }
-}
-
-#Preview {
-    let path = NavigationPath.init()
-    return TaskView(task: Task(), path: Binding.constant(path))
 }

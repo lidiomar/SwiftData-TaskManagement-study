@@ -21,16 +21,26 @@ struct ProjectView: View {
                 TextField("Description", text: $project.projectDescription)
                 DatePicker("Start Date", selection: $project.startDate)
                 DatePicker("End Date", selection: $project.endDate)
+                
+                Section {
+                    ForEach(project.tasks) { task in
+                        Text(task.taskDescription)
+                    }
+                }
             }
+            
             Button(buttonDescription(), action: addNewProject)
+        }.toolbar {
+            addTaskNavigationLink()
         }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Add task", action: addNewProject)
-            }
-        }.onAppear {
-            modelContext.autosaveEnabled = false
+    }
+    
+    private func addTaskNavigationLink() -> some View {
+        let taskView = TaskView(project: project)
+        return NavigationLink(destination: taskView) {
+            Text("Add task")
         }
+        .buttonStyle(.borderless)
     }
     
     private func buttonDescription() -> String {
@@ -43,22 +53,7 @@ struct ProjectView: View {
     }
     
     private func addNewProject() {
-        if exhibitionMode == .create {
-            modelContext.insert(project)
-        }
-        saveProjectState()
+        modelContext.insert(project)
         dismiss()
     }
-    
-    private func saveProjectState() {
-        do {
-            try modelContext.save()
-        } catch {
-            fatalError("An error occurred when updating a new project: \(error)")
-        }
-    }
-}
-
-#Preview {
-    return ProjectView(project: Project(), exhibitionMode: .create)
 }
