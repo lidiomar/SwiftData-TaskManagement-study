@@ -24,7 +24,11 @@ struct ProjectView: View {
                 
                 Section {
                     ForEach(project.tasks) { task in
-                        Text(task.taskDescription)
+                        NavigationLink(destination: TaskView(project: project,
+                                                             selectedTask: task,
+                                                                exhibitionMode: .update)) {
+                            Text(task.taskDescription)
+                        }
                     }.onDelete(perform: deleteTask)
                 }
             }
@@ -44,7 +48,7 @@ struct ProjectView: View {
     }
     
     private func addTaskNavigationLink() -> some View {
-        let taskView = TaskView(project: project)
+        let taskView = TaskView(project: project, selectedTask: Task(), exhibitionMode: .create)
         return NavigationLink(destination: taskView) {
             Text("Add task")
         }
