@@ -22,14 +22,19 @@ struct ProjectView: View {
                 DatePicker("Start Date", selection: $project.startDate)
                 DatePicker("End Date", selection: $project.endDate)
                 
-                Section {
-                    ForEach(project.tasks) { task in
-                        NavigationLink(destination: TaskView(project: project,
-                                                             selectedTask: task,
-                                                                exhibitionMode: .update)) {
-                            Text(task.taskDescription)
-                        }
-                    }.onDelete(perform: deleteTask)
+                Section("Tasks") {
+                    if !project.tasks.isEmpty {
+                        
+                        ForEach(project.tasks) { task in
+                            NavigationLink(destination: TaskView(project: project,
+                                                                 selectedTask: task,
+                                                                 exhibitionMode: .update)) {
+                                Text(task.taskDescription)
+                            }
+                        }.onDelete(perform: deleteTask)
+                    } else {
+                        Text("No tasks created.")
+                    }
                 }
             }
             

@@ -18,6 +18,7 @@
 		9D0B42242B5DFC5C005308B2 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0B42232B5DFC5C005308B2 /* ProjectView.swift */; };
 		9D0B42262B5DFEAC005308B2 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0B42252B5DFEAC005308B2 /* TaskView.swift */; };
 		9D46E2772B5EE7620003C12D /* ExhibitionMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D46E2762B5EE7620003C12D /* ExhibitionMode.swift */; };
+		9D46E2932B5F46CD0003C12D /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D46E2922B5F46CD0003C12D /* CommentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		9D0B42232B5DFC5C005308B2 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 		9D0B42252B5DFEAC005308B2 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
 		9D46E2762B5EE7620003C12D /* ExhibitionMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionMode.swift; sourceTree = "<group>"; };
+		9D46E2922B5F46CD0003C12D /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				9D0B420E2B5DFAD7005308B2 /* ContentView.swift */,
 				9D0B42232B5DFC5C005308B2 /* ProjectView.swift */,
 				9D0B42252B5DFEAC005308B2 /* TaskView.swift */,
+				9D46E2922B5F46CD0003C12D /* CommentView.swift */,
 				9D0B42212B5DFBE9005308B2 /* ModelContext+sqlitePathLocation.swift */,
 				9D0B42102B5DFAD8005308B2 /* Assets.xcassets */,
 				9D0B42122B5DFAD8005308B2 /* Preview Content */,
@@ -174,6 +177,7 @@
 				9D0B42242B5DFC5C005308B2 /* ProjectView.swift in Sources */,
 				9D0B421C2B5DFB00005308B2 /* Project.swift in Sources */,
 				9D0B42222B5DFBE9005308B2 /* ModelContext+sqlitePathLocation.swift in Sources */,
+				9D46E2932B5F46CD0003C12D /* CommentView.swift in Sources */,
 				9D0B42262B5DFEAC005308B2 /* TaskView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

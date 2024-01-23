@@ -12,14 +12,14 @@ import SwiftData
 class Task: Identifiable {
     let id = UUID()
     var taskDescription: String
-    //@Relationship(deleteRule: .cascade) var comments: [Comment]
+    @Relationship(deleteRule: .cascade) var comments: [Comment]
     var status: String
     
     init(taskDescription: String = "",
          comments: [Comment] = [],
          status: String = "") {
         self.taskDescription = taskDescription
-        //self.comments = comments
+        self.comments = comments
         self.status = status
     }
 }

@@ -20,6 +20,18 @@ struct TaskView: View {
             Form {
                 TextField("Description", text: $selectedTask.taskDescription)
                 TextField("Status", text: $selectedTask.status)
+                
+                if !selectedTask.comments.isEmpty {
+                    Section("Comments") {
+                        ForEach(selectedTask.comments) { comment in
+                            NavigationLink(destination: CommentView(task: selectedTask,
+                                                                    selectedComment: comment,
+                                                                    exhibitionMode: .update)) {
+                                Text(comment.commentDescription)
+                            }
+                        }
+                    }
+                }
             }
             
             Button("Save", action: {
@@ -29,10 +41,24 @@ struct TaskView: View {
                                     status: selectedTask.status)
                     
                     modelContext.insert(task)
+                    task.comments = selectedTask.comments
                     project.tasks.append(task)
                 }
                 dismiss()
             })
+        }.toolbar {
+            addCommentNavigationLink()
         }
+    }
+    
+    private func addCommentNavigationLink() -> some View {
+        let commentView = CommentView(task: selectedTask,
+                                      selectedComment: Comment(),
+                                      exhibitionMode: .create)
+        
+        return NavigationLink(destination: commentView) {
+            Text("Add comment")
+        }
+        .buttonStyle(.borderless)
     }
 }
