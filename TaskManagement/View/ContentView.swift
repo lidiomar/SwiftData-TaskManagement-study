@@ -27,11 +27,14 @@ struct ContentView: View {
                         }
                     }
                 }.onDelete(perform: deleteProject)
-            }.toolbar {
+            }
+            .toolbar {
                 Button("Add Project", action: addDestination)
-            }.navigationDestination(for: Project.self, destination: { p in
+            }
+            .navigationDestination(for: Project.self, destination: { p in
                 ProjectView(project: p, exhibitionMode: .create)
             })
+            .navigationTitle("Projects")
         }
     }
 }

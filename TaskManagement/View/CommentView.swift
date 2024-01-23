@@ -22,12 +22,10 @@ struct CommentView: View {
     var body: some View {
         VStack {
             Form {
-                Section("Comments") {
-                    TextField("", text: $selectedComment.commentDescription)
-                }
+                TextField("", text: $selectedComment.commentDescription)
             }
             Button("Save", action: saveCommentState)
-        }
+        }.navigationTitle("Comment")
     }
 }
 

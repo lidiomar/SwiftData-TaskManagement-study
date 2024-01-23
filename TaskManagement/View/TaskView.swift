@@ -44,7 +44,7 @@ struct TaskView: View {
             Button("Save", action: saveTaskState)
         }.toolbar {
             addCommentNavigationLink()
-        }
+        }.navigationTitle("Task")
     }
 }
 

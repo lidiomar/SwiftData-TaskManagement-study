@@ -41,7 +41,7 @@ struct ProjectView: View {
             Button(buttonDescription(), action: addNewProject)
         }.toolbar {
             addTaskNavigationLink()
-        }
+        }.navigationTitle("Project")
     }
 }
 
