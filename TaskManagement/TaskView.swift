@@ -29,7 +29,7 @@ struct TaskView: View {
                                                                     exhibitionMode: .update)) {
                                 Text(comment.commentDescription)
                             }
-                        }
+                        }.onDelete(perform: deleteComment)
                     }
                 }
             }
@@ -60,5 +60,13 @@ struct TaskView: View {
             Text("Add comment")
         }
         .buttonStyle(.borderless)
+    }
+    
+    private func deleteComment(indexSet: IndexSet) {
+        for index in indexSet {
+            let comment = selectedTask.comments[index]
+            selectedTask.comments.remove(at: index)
+            modelContext.delete(comment)
+        }
     }
 }

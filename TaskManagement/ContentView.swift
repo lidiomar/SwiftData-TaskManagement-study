@@ -12,6 +12,7 @@ struct ContentView: View {
     @Environment(\.modelContext) var modelContext: ModelContext
     @Query var projects: [Project]
     @State private var path = [Project]()
+    
     var body: some View {
         let _ = print(modelContext.sqliteCommand)
         NavigationStack(path: $path) {
@@ -25,7 +26,7 @@ struct ContentView: View {
                     }
                 }.onDelete(perform: deleteProject)
             }.toolbar {
-                Button("Add Project", systemImage: "plus", action: addDestination)
+                Button("Add Project", action: addDestination)
             }.navigationDestination(for: Project.self, destination: { p in
                 ProjectView(project: p, exhibitionMode: .create)
             })
