@@ -14,7 +14,9 @@ struct ContentView: View {
     @State private var path = [Project]()
     
     var body: some View {
+        
         let _ = print(modelContext.sqliteCommand)
+        
         NavigationStack(path: $path) {
             List {
                 ForEach(projects) { project in                    
@@ -32,8 +34,11 @@ struct ContentView: View {
             })
         }
     }
-    
-    private func deleteProject(indexSet: IndexSet) {
+}
+
+//MARK: private functions
+private extension ContentView {
+    func deleteProject(indexSet: IndexSet) {
         for index in indexSet {
             let project = projects[index]
             modelContext.delete(project)

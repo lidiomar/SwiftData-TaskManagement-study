@@ -9,8 +9,10 @@ import SwiftUI
 import SwiftData
 
 struct ProjectView: View {
+    //MARK: Environment property wrappers.
     @Environment(\.modelContext) var modelContext: ModelContext
     @Environment(\.dismiss) var dismiss
+    
     @Bindable var project: Project
     var exhibitionMode: ExhibitionMode
     
@@ -24,7 +26,6 @@ struct ProjectView: View {
                 
                 Section("Tasks") {
                     if !project.tasks.isEmpty {
-                        
                         ForEach(project.tasks) { task in
                             NavigationLink(destination: TaskView(project: project,
                                                                  selectedTask: task,
@@ -37,14 +38,16 @@ struct ProjectView: View {
                     }
                 }
             }
-            
             Button(buttonDescription(), action: addNewProject)
         }.toolbar {
             addTaskNavigationLink()
         }
     }
-    
-    private func deleteTask(indexSet: IndexSet) {
+}
+
+//MARK: private functions
+private extension ProjectView {
+    func deleteTask(indexSet: IndexSet) {
         for index in indexSet {
             let task = project.tasks[index]
             project.tasks.remove(at: index)
@@ -52,7 +55,7 @@ struct ProjectView: View {
         }
     }
     
-    private func addTaskNavigationLink() -> some View {
+    func addTaskNavigationLink() -> some View {
         let taskView = TaskView(project: project, selectedTask: Task(), exhibitionMode: .create)
         return NavigationLink(destination: taskView) {
             Text("Add task")
@@ -60,7 +63,7 @@ struct ProjectView: View {
         .buttonStyle(.borderless)
     }
     
-    private func buttonDescription() -> String {
+    func buttonDescription() -> String {
         switch exhibitionMode {
         case .create:
             return "Create"
@@ -69,7 +72,7 @@ struct ProjectView: View {
         }
     }
     
-    private func addNewProject() {
+    func addNewProject() {
         modelContext.insert(project)
         dismiss()
     }

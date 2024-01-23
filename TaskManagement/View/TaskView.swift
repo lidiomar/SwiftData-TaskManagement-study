@@ -9,10 +9,14 @@ import SwiftUI
 import SwiftData
 
 struct TaskView: View {
+    //MARK: Bindable property wrappers.
     @Bindable var project: Project
     @Bindable var selectedTask: Task
+    
+    //MARK: Environment property wrappers.
     @Environment(\.modelContext) var modelContext: ModelContext
     @Environment(\.dismiss) var dismiss
+    
     var exhibitionMode: ExhibitionMode
     
     var body: some View {
@@ -24,34 +28,26 @@ struct TaskView: View {
                 if !selectedTask.comments.isEmpty {
                     Section("Comments") {
                         ForEach(selectedTask.comments) { comment in
-                            NavigationLink(destination: CommentView(task: selectedTask,
-                                                                    selectedComment: comment,
-                                                                    exhibitionMode: .update)) {
+                            let commentView = CommentView(task: selectedTask, 
+                                                          selectedComment: comment,
+                                                          exhibitionMode: .update)
+                            
+                            NavigationLink(destination: commentView) {
                                 Text(comment.commentDescription)
                             }
                         }.onDelete(perform: deleteComment)
                     }
                 }
             }
-            
-            Button("Save", action: {
-                if exhibitionMode == .create {
-                    let task = Task(taskDescription: selectedTask.taskDescription,
-                                    comments: [],
-                                    status: selectedTask.status)
-                    
-                    modelContext.insert(task)
-                    task.comments = selectedTask.comments
-                    project.tasks.append(task)
-                }
-                dismiss()
-            })
+            Button("Save", action: saveTaskState)
         }.toolbar {
             addCommentNavigationLink()
         }
     }
-    
-    private func addCommentNavigationLink() -> some View {
+}
+
+private extension TaskView {
+    func addCommentNavigationLink() -> some View {
         let commentView = CommentView(task: selectedTask,
                                       selectedComment: Comment(),
                                       exhibitionMode: .create)
@@ -62,11 +58,24 @@ struct TaskView: View {
         .buttonStyle(.borderless)
     }
     
-    private func deleteComment(indexSet: IndexSet) {
+    func deleteComment(indexSet: IndexSet) {
         for index in indexSet {
             let comment = selectedTask.comments[index]
             selectedTask.comments.remove(at: index)
             modelContext.delete(comment)
         }
+    }
+    
+    func saveTaskState() {
+        if exhibitionMode == .create {
+            let task = Task(taskDescription: selectedTask.taskDescription,
+                            comments: [],
+                            status: selectedTask.status)
+            
+            modelContext.insert(task)
+            task.comments = selectedTask.comments
+            project.tasks.append(task)
+        }
+        dismiss()
     }
 }

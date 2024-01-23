@@ -46,6 +46,6 @@ struct TaskManagementApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-        }.modelContainer(customLocation)
+        }.modelContainer(container)
     }
 }
