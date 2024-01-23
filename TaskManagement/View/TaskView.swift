@@ -25,10 +25,10 @@ struct TaskView: View {
                 TextField("Description", text: $selectedTask.taskDescription)
                 TextField("Status", text: $selectedTask.status)
                 
-                if !selectedTask.comments.isEmpty {
-                    Section("Comments") {
+                Section("Comments") {
+                    if !selectedTask.comments.isEmpty {
                         ForEach(selectedTask.comments) { comment in
-                            let commentView = CommentView(task: selectedTask, 
+                            let commentView = CommentView(task: selectedTask,
                                                           selectedComment: comment,
                                                           exhibitionMode: .update)
                             
@@ -36,6 +36,8 @@ struct TaskView: View {
                                 Text(comment.commentDescription)
                             }
                         }.onDelete(perform: deleteComment)
+                    } else {
+                        Text("No comments created.")
                     }
                 }
             }
