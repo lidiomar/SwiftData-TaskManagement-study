@@ -6,15 +6,24 @@
 //
 
 import Foundation
-import SwiftData
+import SwiftUI
 
-@Model
-class Project {
+@Observable
+class Projects: Identifiable {
+    var items: [Project]
+    
+    init(items: [Project] = []) {
+        self.items = items
+    }
+}
+
+@Observable
+class Project: Identifiable, Hashable {
     var projectDescription: String
     var name: String
     var startDate: Date
     var endDate: Date
-    @Relationship(deleteRule: .cascade) var  tasks: [Task]
+    var tasks: [Task]
     
     init(projectDescription: String = "", name: String = "", startDate: Date = .now, endDate: Date = .now, tasks: [Task] = []) {
         self.projectDescription = projectDescription
@@ -22,6 +31,14 @@ class Project {
         self.startDate = startDate
         self.endDate = endDate
         self.tasks = tasks
+    }
+    
+    static func == (lhs: Project, rhs: Project) -> Bool {
+        return lhs.projectDescription == rhs.projectDescription
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(projectDescription)
     }
 }
     

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct CommentView: View {
     //MARK: Bindable property wrappers.
@@ -15,7 +14,6 @@ struct CommentView: View {
     
     //MARK: Environment property wrappers.
     @Environment(\.dismiss) var dismiss
-    @Environment(\.modelContext) var modelContext: ModelContext
     
     var exhibitionMode: ExhibitionMode
     
@@ -33,7 +31,6 @@ private extension CommentView {
     func saveCommentState() {
         if exhibitionMode == .create {
             let comment = Comment(commentDescription: selectedComment.commentDescription)
-            modelContext.insert(comment)
             task.comments.append(comment)
         }
         dismiss()

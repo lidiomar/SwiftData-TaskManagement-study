@@ -6,14 +6,13 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct ProjectView: View {
     //MARK: Environment property wrappers.
-    @Environment(\.modelContext) var modelContext: ModelContext
     @Environment(\.dismiss) var dismiss
     
     @Bindable var project: Project
+    @Bindable var projects: Projects
     var exhibitionMode: ExhibitionMode
     
     var body: some View {
@@ -28,7 +27,8 @@ struct ProjectView: View {
                     if !project.tasks.isEmpty {
                         ForEach(project.tasks) { task in
                             NavigationLink(destination: TaskView(project: project,
-                                                                 selectedTask: task,
+                                                                 selectedTask: task, 
+                                                                 projects: projects,
                                                                  exhibitionMode: .update)) {
                                 Text(task.taskDescription)
                             }
@@ -51,12 +51,11 @@ private extension ProjectView {
         for index in indexSet {
             let task = project.tasks[index]
             project.tasks.remove(at: index)
-            modelContext.delete(task)
         }
     }
     
     func addTaskNavigationLink() -> some View {
-        let taskView = TaskView(project: project, selectedTask: Task(), exhibitionMode: .create)
+        let taskView = TaskView(project: project, selectedTask: Task(), projects: projects, exhibitionMode: .create)
         return NavigationLink(destination: taskView) {
             Text("Add task")
         }
@@ -73,7 +72,10 @@ private extension ProjectView {
     }
     
     func addNewProject() {
-        modelContext.insert(project)
+        if exhibitionMode == .create {
+            projects.items.append(project)
+        }
+        
         dismiss()
     }
 }

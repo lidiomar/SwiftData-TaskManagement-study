@@ -6,15 +6,14 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct TaskView: View {
     //MARK: Bindable property wrappers.
     @Bindable var project: Project
     @Bindable var selectedTask: Task
+    @Bindable var projects: Projects
     
     //MARK: Environment property wrappers.
-    @Environment(\.modelContext) var modelContext: ModelContext
     @Environment(\.dismiss) var dismiss
     
     var exhibitionMode: ExhibitionMode
@@ -64,7 +63,6 @@ private extension TaskView {
         for index in indexSet {
             let comment = selectedTask.comments[index]
             selectedTask.comments.remove(at: index)
-            modelContext.delete(comment)
         }
     }
     
@@ -74,7 +72,6 @@ private extension TaskView {
                             comments: [],
                             status: selectedTask.status)
             
-            modelContext.insert(task)
             task.comments = selectedTask.comments
             project.tasks.append(task)
         }

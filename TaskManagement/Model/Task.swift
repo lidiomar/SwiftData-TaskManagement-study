@@ -6,13 +6,12 @@
 //
 
 import Foundation
-import SwiftData
 
-@Model
-class Task: Identifiable {
+@Observable
+class Task: Hashable, Identifiable {
     let id = UUID()
     var taskDescription: String
-    @Relationship(deleteRule: .cascade) var comments: [Comment]
+    var comments: [Comment]
     var status: String
     
     init(taskDescription: String = "",
@@ -21,5 +20,13 @@ class Task: Identifiable {
         self.taskDescription = taskDescription
         self.comments = comments
         self.status = status
+    }
+    
+    static func == (lhs: Task, rhs: Task) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

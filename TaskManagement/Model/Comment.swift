@@ -6,14 +6,21 @@
 //
 
 import Foundation
-import SwiftData
 
-@Model
-class Comment {
+@Observable
+class Comment: Hashable, Identifiable {
     var commentDescription: String
     
     init(commentDescription: String = "") {
         self.commentDescription = commentDescription
+    }
+    
+    static func == (lhs: Comment, rhs: Comment) -> Bool {
+        return lhs.commentDescription == rhs.commentDescription
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(commentDescription)
     }
 }
 

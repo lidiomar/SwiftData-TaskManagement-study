@@ -6,21 +6,16 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) var modelContext: ModelContext
-    @Query var projects: [Project]
     @State private var path = [Project]()
+    @Bindable var projects = Projects()
     
     var body: some View {
-        
-        let _ = print(modelContext.sqliteCommand)
-        
         NavigationStack(path: $path) {
             List {
-                ForEach(projects) { project in                    
-                    NavigationLink(destination: ProjectView(project: project, exhibitionMode: .update)) {
+                ForEach(projects.items) { project in
+                    NavigationLink(destination: ProjectView(project: project, projects: projects, exhibitionMode: .update)) {
                         VStack(alignment: .leading) {
                             Text(project.name)
                             Text(project.projectDescription)
@@ -32,7 +27,7 @@ struct ContentView: View {
                 Button("Add Project", action: addDestination)
             }
             .navigationDestination(for: Project.self, destination: { p in
-                ProjectView(project: p, exhibitionMode: .create)
+                ProjectView(project: p, projects: projects, exhibitionMode: .create)
             })
             .navigationTitle("Projects")
         }
@@ -43,8 +38,7 @@ struct ContentView: View {
 private extension ContentView {
     func deleteProject(indexSet: IndexSet) {
         for index in indexSet {
-            let project = projects[index]
-            modelContext.delete(project)
+            projects.items.remove(at: index)
         }
     }
     
